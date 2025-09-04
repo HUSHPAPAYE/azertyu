@@ -1,8 +1,8 @@
 {
   "name": "Shift90",
   "short_name": "Shift90",
-  "start_url": "./",
-  "scope": "./",
+  "start_url": "/azertyu/",
+  "scope": "/azertyu/",
   "display": "standalone",
   "background_color": "#0b1220",
   "theme_color": "#0b1220",
