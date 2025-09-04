@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shift 90 — v3</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0b1220">
+  <link rel="icon" href="icon-512.png" sizes="512x512">
+  <style>/* critical tiny CSS, rest in style.css */body{margin:0;background:#0b1220;color:#e6e9f2;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}a{color:#9ecbff;text-decoration:none}</style>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Shift 90</div>
+    <div class="subtitle">90 jours de progrès mesurable — Stratégique / Organique / Artistique</div>
+  </header>
+
+  <main class="container">
+    <section class="metrics" id="metrics">
+      <div class="metric"><div class="k" id="m_energy">0</div><div class="l">Énergie accumulée</div></div>
+      <div class="metric"><div class="k" id="m_streak">0%</div><div class="l">Streak ≥60%</div></div>
+      <div class="metric"><div class="k" id="m_phase">P1</div><div class="l">Phase</div></div>
+    </section>
+
+    <section class="controls">
+      <button id="btn_export_json">Exporter JSON</button>
+      <button id="btn_export_csv">Export CSV</button>
+      <button id="btn_import">Importer</button>
+      <input type="file" id="file_import" accept=".json" hidden>
+    </section>
+
+    <section class="legend">
+      <span class="badge b1" title="Performance cognitive">Perf. cognitive</span>
+      <span class="badge b2" title="Éveil physiologique">Éveil physio.</span>
+      <span class="badge b3" title="Absence substances Cat.1">Absence subst. C1</span>
+      <span class="badge b4" title="Absence substances Cat.2">Absence subst. C2</span>
+    </section>
+
+    <section id="grid" class="grid" aria-label="Grille des 90 jours"></section>
+  </main>
+
+  <template id="tpl-detail">
+    <section class="day-detail">
+      <div class="detail-head">
+        <h3>Jour <span class="d-num"></span> — <span class="d-date"></span></h3>
+        <button class="close">Fermer</button>
+      </div>
+      <div class="detail-body"></div>
+    </section>
+  </template>
+
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(()=>{});
+    }
+  </script>
+</body>
+</html>

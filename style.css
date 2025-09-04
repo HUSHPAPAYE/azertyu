@@ -1,0 +1,38 @@
+
+:root{
+  --bg:#0b1220; --panel:#111a2e; --muted:#94a3b8; --line:#1f2a44;
+  --accent:#4da3ff; --good:#15c27f; --warn:#f59e0b; --bad:#ef4444;
+  --card:#0f172a;
+}
+*{box-sizing:border-box}
+.container{max-width:1100px;margin:20px auto;padding:0 16px}
+.topbar{padding:16px 16px 8px;background:var(--bg);position:sticky;top:0}
+.brand{font-size:22px;font-weight:700}
+.subtitle{color:var(--muted);font-size:14px;margin-top:4px}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:12px 0}
+.metric{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}
+.metric .k{font-size:22px;font-weight:700}
+.metric .l{font-size:12px;color:var(--muted)}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 12px}
+.controls button{background:#1b2946;color:#e6e9f2;border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer}
+.controls button:hover{border-color:#28406f}
+.legend{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 16px}
+.badge{padding:4px 8px;border-radius:999px;background:#13203b;border:1px solid var(--line);font-size:12px;color:#bcd4ff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.day-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;cursor:pointer;position:relative}
+.day-card:hover{border-color:#2a406b}
+.day-card .num{font-weight:700;font-size:16px}
+.day-card .date{color:var(--muted);font-size:12px;margin-top:2px}
+.pills{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.pill{padding:2px 6px;border-radius:999px;border:1px solid var(--line);font-size:11px;color:#cfe3ff;background:#13203b}
+.day-detail{margin:12px 0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel)}
+.detail-head{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-bottom:1px solid var(--line)}
+.detail-body{padding:12px}
+.day-detail button.close{background:#1b2946;color:#e6e9f2;border:1px solid var(--line);border-radius:8px;padding:6px 10px;cursor:pointer}
+.switches{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
+.switch{display:flex;align-items:center;gap:8px;background:#0f172a;border:1px solid var(--line);border-radius:10px;padding:8px}
+.switch input{transform:scale(1.2)}
+.small{color:var(--muted);font-size:12px}
+@media (max-width:680px){
+  .metrics{grid-template-columns:1fr}
+}
