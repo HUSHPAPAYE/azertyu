@@ -5,56 +5,135 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Shift 90 — v3</title>
   <link rel="manifest" href="manifest.webmanifest">
-  <meta name="theme-color" content="#0b1220">
-  <link rel="icon" href="icon-512.png" sizes="512x512">
-  <style>/* critical tiny CSS, rest in style.css */body{margin:0;background:#0b1220;color:#e6e9f2;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}a{color:#9ecbff;text-decoration:none}</style>
   <link rel="stylesheet" href="style.css">
+  <meta name="theme-color" content="#09142b">
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">Shift 90</div>
-    <div class="subtitle">90 jours de progrès mesurable — Stratégique / Organique / Artistique</div>
-  </header>
+<header class="topbar glass">
+  <div class="brand">
+    <img class="logo" src="icon-512.png" alt="Shift90">
+    <div>
+      <h1>Shift 90</h1>
+      <div class="subtitle">90 jours de progrès mesurable — Stratégique / Organique / Artistique</div>
+    </div>
+  </div>
+  <div class="controls">
+    <label>Début <input id="startDate" type="date"></label>
+    <button id="todayBtn">Aujourd’hui</button>
+    <button id="mviBtn">Jour minimum viable</button>
+    <button id="autoplanBtn">Auto‑plan</button>
+    <button id="exportBtn">Exporter JSON</button>
+    <button id="exportCsvBtn">Export CSV</button>
+    <button id="importBtn">Importer</button>
+    <input id="importFile" type="file" accept="application/json" hidden>
+  </div>
+</header>
 
-  <main class="container">
-    <section class="metrics" id="metrics">
-      <div class="metric"><div class="k" id="m_energy">0</div><div class="l">Énergie accumulée</div></div>
-      <div class="metric"><div class="k" id="m_streak">0%</div><div class="l">Streak ≥60%</div></div>
-      <div class="metric"><div class="k" id="m_phase">P1</div><div class="l">Phase</div></div>
-    </section>
+<section class="scorebar glass">
+  <div class="score-item"><span id="totalPts">0</span><label>Énergie accumulée</label></div>
+  <div class="score-item"><span id="streak">0</span><label>Streak ≥60%</label></div>
+  <div class="score-item"><span id="phaseNow">P1</span><label>Phase</label></div>
+  <div class="score-item smalls">
+    <div><span id="orgPct">0%</span><label>Organique</label></div>
+    <div><span id="strPct">0%</span><label>Stratégique</label></div>
+    <div><span id="artPct">0%</span><label>Artistique</label></div>
+  </div>
+  <div class="score-item timeline">
+    <svg id="spark" viewBox="0 0 200 40" preserveAspectRatio="none"></svg>
+    <label>14 derniers jours</label>
+  </div>
+</section>
 
-    <section class="controls">
-      <button id="btn_export_json">Exporter JSON</button>
-      <button id="btn_export_csv">Export CSV</button>
-      <button id="btn_import">Importer</button>
-      <input type="file" id="file_import" accept=".json" hidden>
-    </section>
+<main>
+  <section class="legend glass">
+    <div class="legend-row">
+      <strong>Statuts:</strong>
+      <span class="pill gray">Pasty</span>
+      <span class="pill blue">Bleu</span>
+      <span class="pill green">Vert</span>
+      <span class="sep"></span>
+      <span>Appui court: état suivant. Appui long: Vert direct.</span>
+    </div>
+    <div class="legend-row">
+      <strong>Clarté (substances):</strong>
+      <span class="pill cyan">Cat.1</span><span class="label">nicotiniques, sucre, etc. → Vert visé J7</span>
+      <span class="pill magenta">Cat.2</span><span class="label">psychoactives (alcool) → Zéro dès J1</span>
+    </div>
+  </section>
 
-    <section class="legend">
-      <span class="badge b1" title="Performance cognitive">Perf. cognitive</span>
-      <span class="badge b2" title="Éveil physiologique">Éveil physio.</span>
-      <span class="badge b3" title="Absence substances Cat.1">Absence subst. C1</span>
-      <span class="badge b4" title="Absence substances Cat.2">Absence subst. C2</span>
-    </section>
-
-    <section id="grid" class="grid" aria-label="Grille des 90 jours"></section>
-  </main>
-
-  <template id="tpl-detail">
-    <section class="day-detail">
-      <div class="detail-head">
-        <h3>Jour <span class="d-num"></span> — <span class="d-date"></span></h3>
-        <button class="close">Fermer</button>
+  <section class="notify glass">
+    <h2>Notifications</h2>
+    <div class="notify-grid">
+      <label>Matin <input id="notifMorning" type="time" value="08:30"></label>
+      <label>Après-midi <input id="notifNoon" type="time" value="14:00"></label>
+      <label>Soir <input id="notifEvening" type="time" value="21:30"></label>
+      <div class="notify-actions">
+        <button id="reqPerm">Autoriser</button>
+        <button id="saveNotif">Enregistrer</button>
+        <span class="hint">Notifications locales quand l’app est ouverte. Pour push complet: hébergement HTTPS.</span>
       </div>
-      <div class="detail-body"></div>
-    </section>
-  </template>
+    </div>
+  </section>
 
-  <script src="app.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js').catch(()=>{});
-    }
-  </script>
+  <section class="filters glass">
+    <label>Phase
+      <select id="phaseFilter">
+        <option value="all">Toutes</option>
+        <option value="1">P1 – Reset</option>
+        <option value="2">P2 – Intensité</option>
+        <option value="3">P3 – Vision</option>
+      </select>
+    </label>
+    <label>Recherche <input id="searchDay" type="text" placeholder="jour ou date (ex 12, 2025-09-15)"></label>
+  </section>
+
+  <section id="daysGrid" class="grid"></section>
+
+  <section id="detail" class="detail glass hidden">
+    <div class="detail-head">
+      <div class="left">
+        <h2 id="detailTitle"></h2>
+        <div class="meta">
+          <span id="detailPhase" class="phase"></span>
+          <span id="detailDate"></span>
+          <span id="detailPoints" class="points"></span>
+        </div>
+      </div>
+      <div class="guide" id="dayGuide"></div>
+    </div>
+
+    <div class="section-title">Organique (santé)</div>
+    <div id="tasksOrg" class="tasks"></div>
+
+    <div class="section-title">Stratégique (travail / revenus / savoir)</div>
+    <div id="tasksStr" class="tasks"></div>
+
+    <div class="section-title">Artistique (Paye / musique / visuel)</div>
+    <div id="tasksArt" class="tasks"></div>
+
+    <div class="notes">
+      <div class="dq">
+        <label>Question du jour</label>
+        <div id="dayQuestion" class="question"></div>
+        <textarea id="dayAnswer" rows="3" placeholder="Réponse rapide"></textarea>
+      </div>
+      <div class="tags">
+        <button class="tag" data-tag="#idée">#idée</button>
+        <button class="tag" data-tag="#blocage">#blocage</button>
+        <button class="tag" data-tag="#insight">#insight</button>
+        <button class="tag" data-tag="#grâce">#grâce</button>
+      </div>
+      <label for="dayNotes">Revue & Alignement</label>
+      <textarea id="dayNotes" rows="5" placeholder="Faits, apprentissages, correctifs."></textarea>
+      <button id="saveDay">Enregistrer ce jour</button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <small>Shift 90 v3 — PWA locale. Données stockées dans le navigateur.</small>
+</footer>
+
+<script src="app.js"></script>
 </body>
 </html>
